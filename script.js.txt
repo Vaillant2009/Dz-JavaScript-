@@ -1,0 +1,325 @@
+let car = {
+    manufacturer: "BMW",
+    model: "M5",
+    year: 2022,
+    speed: 100
+};
+
+function showCar(car) {
+    alert("Виробник: " + car.manufacturer +
+        "\nМодель: " + car.model +
+        "\nРік: " + car.year +
+        "\nШвидкість: " + car.speed);
+}
+
+function travelTime(car, distance) {
+    let time = distance / car.speed;
+    time = time + Math.floor(time / 4);
+    alert("Час у дорозі: " + time + " год.");
+}
+
+showCar(car);
+travelTime(car, 800);
+
+
+function add(a, b) {
+    return {
+        numerator: a.numerator * b.denominator + b.numerator * a.denominator,
+        denominator: a.denominator * b.denominator
+    };
+}
+
+function subtract(a, b) {
+    return {
+        numerator: a.numerator * b.denominator - b.numerator * a.denominator,
+        denominator: a.denominator * b.denominator
+    };
+}
+
+function multiply(a, b) {
+    return {
+        numerator: a.numerator * b.numerator,
+        denominator: a.denominator * b.denominator
+    };
+}
+
+function divide(a, b) {
+    return {
+        numerator: a.numerator * b.denominator,
+        denominator: a.denominator * b.numerator
+    };
+}
+
+function gcd(a, b) {
+    a = Math.abs(a);
+    b = Math.abs(b);
+
+    while (b != 0) {
+        let temp = b;
+        b = a % b;
+        a = temp;
+    }
+
+    return a;
+}
+
+function reduce(fraction) {
+    let d = gcd(fraction.numerator, fraction.denominator);
+
+    fraction.numerator = fraction.numerator / d;
+    fraction.denominator = fraction.denominator / d;
+
+    return fraction;
+}
+
+let fraction1 = { numerator: 1, denominator: 2 };
+let fraction2 = { numerator: 1, denominator: 3 };
+
+let result1 = reduce(add(fraction1, fraction2));
+let result2 = reduce(subtract(fraction1, fraction2));
+let result3 = reduce(multiply(fraction1, fraction2));
+let result4 = reduce(divide(fraction1, fraction2));
+
+alert("Додавання: " + result1.numerator + "/" + result1.denominator +
+    "\nВіднімання: " + result2.numerator + "/" + result2.denominator +
+    "\nМноження: " + result3.numerator + "/" + result3.denominator +
+    "\nДілення: " + result4.numerator + "/" + result4.denominator);
+
+
+let time = {
+    hours: 10,
+    minutes: 30,
+    seconds: 20
+};
+
+function showTime(time) {
+    alert(time.hours + ":" + time.minutes + ":" + time.seconds);
+}
+
+function changeSeconds(time, seconds) {
+    let total = time.hours * 3600 + time.minutes * 60 + time.seconds;
+    total = total + seconds;
+    total = (total % 86400 + 86400) % 86400;
+
+    time.hours = Math.floor(total / 3600);
+    time.minutes = Math.floor(total % 3600 / 60);
+    time.seconds = total % 60;
+}
+
+function changeMinutes(time, minutes) {
+    changeSeconds(time, minutes * 60);
+}
+
+function changeHours(time, hours) {
+    changeSeconds(time, hours * 3600);
+}
+
+showTime(time);
+changeSeconds(time, 50);
+showTime(time);
+changeMinutes(time, 10);
+showTime(time);
+changeHours(time, 2);
+showTime(time);
+
+
+let shoppingList = [
+    { name: "Хліб", quantity: 2, bought: false },
+    { name: "Молоко", quantity: 1, bought: true },
+    { name: "Яйця", quantity: 10, bought: false }
+];
+
+function showList(list) {
+    list.sort(function(a, b) {
+        return a.bought - b.bought;
+    });
+
+    let text = "";
+
+    for (let i = 0; i < list.length; i++) {
+        text += list[i].name + " - " + list[i].quantity +
+            ", куплено: " + list[i].bought + "\n";
+    }
+
+    alert(text);
+}
+
+function addPurchase(list, name, quantity) {
+    for (let i = 0; i < list.length; i++) {
+        if (list[i].name == name) {
+            list[i].quantity += quantity;
+            return;
+        }
+    }
+
+    list.push({ name: name, quantity: quantity, bought: false });
+}
+
+function buyProduct(list, name) {
+    for (let i = 0; i < list.length; i++) {
+        if (list[i].name == name) {
+            list[i].bought = true;
+        }
+    }
+}
+
+addPurchase(shoppingList, "Хліб", 1);
+buyProduct(shoppingList, "Яйця");
+showList(shoppingList);
+
+
+let receipt = [
+    { name: "Хліб", quantity: 2, price: 25 },
+    { name: "Молоко", quantity: 1, price: 40 },
+    { name: "Шоколад", quantity: 3, price: 50 }
+];
+
+function totalPrice(receipt) {
+    let sum = 0;
+
+    for (let i = 0; i < receipt.length; i++) {
+        sum += receipt[i].quantity * receipt[i].price;
+    }
+
+    return sum;
+}
+
+function showReceipt(receipt) {
+    let text = "";
+
+    for (let i = 0; i < receipt.length; i++) {
+        text += receipt[i].name + " - " + receipt[i].quantity +
+            " x " + receipt[i].price + " = " +
+            receipt[i].quantity * receipt[i].price + " грн\n";
+    }
+
+    alert(text + "Разом: " + totalPrice(receipt) + " грн");
+}
+
+function mostExpensive(receipt) {
+    let max = receipt[0];
+
+    for (let i = 1; i < receipt.length; i++) {
+        if (receipt[i].price > max.price) {
+            max = receipt[i];
+        }
+    }
+
+    return max.name;
+}
+
+function averagePrice(receipt) {
+    let sum = 0;
+    let count = 0;
+
+    for (let i = 0; i < receipt.length; i++) {
+        sum += receipt[i].price * receipt[i].quantity;
+        count += receipt[i].quantity;
+    }
+
+    return sum / count;
+}
+
+showReceipt(receipt);
+alert("Найдорожчий товар: " + mostExpensive(receipt));
+alert("Середня вартість товару: " + averagePrice(receipt) + " грн");
+
+
+let styles = [
+    { name: "color", value: "red" },
+    { name: "font-size", value: "24px" },
+    { name: "text-align", value: "center" },
+    { name: "text-decoration", value: "underline" }
+];
+
+function showText(styles, text) {
+    let styleText = "";
+
+    for (let i = 0; i < styles.length; i++) {
+        styleText += styles[i].name + ":" + styles[i].value + ";";
+    }
+
+    document.write("<p style='" + styleText + "'>" + text + "</p>");
+}
+
+showText(styles, "Привіт, JavaScript!");
+
+
+let rooms = [
+    { name: "Аудиторія 101", places: 15, department: "Інформатика" },
+    { name: "Аудиторія 202", places: 20, department: "Математика" },
+    { name: "Аудиторія 103", places: 12, department: "Інформатика" },
+    { name: "Аудиторія 301", places: 18, department: "Історія" }
+];
+
+function showRooms(rooms) {
+    let text = "";
+
+    for (let i = 0; i < rooms.length; i++) {
+        text += rooms[i].name + ", місць: " + rooms[i].places +
+            ", кафедра: " + rooms[i].department + "\n";
+    }
+
+    alert(text);
+}
+
+function showDepartment(rooms, department) {
+    let text = "";
+
+    for (let i = 0; i < rooms.length; i++) {
+        if (rooms[i].department == department) {
+            text += rooms[i].name + ", місць: " + rooms[i].places + "\n";
+        }
+    }
+
+    alert(text);
+}
+
+function showGroupRooms(rooms, group) {
+    let text = "";
+
+    for (let i = 0; i < rooms.length; i++) {
+        if (rooms[i].department == group.department &&
+            rooms[i].places >= group.students) {
+            text += rooms[i].name + ", місць: " + rooms[i].places + "\n";
+        }
+    }
+
+    alert(text);
+}
+
+function sortByPlaces(rooms) {
+    rooms.sort(function(a, b) {
+        return a.places - b.places;
+    });
+
+    showRooms(rooms);
+}
+
+function sortByName(rooms) {
+    rooms.sort(function(a, b) {
+        if (a.name < b.name) {
+            return -1;
+        }
+
+        if (a.name > b.name) {
+            return 1;
+        }
+
+        return 0;
+    });
+
+    showRooms(rooms);
+}
+
+let group = {
+    name: "Група П-21",
+    students: 14,
+    department: "Інформатика"
+};
+
+showRooms(rooms);
+showDepartment(rooms, "Інформатика");
+showGroupRooms(rooms, group);
+sortByPlaces(rooms);
+sortByName(rooms);
